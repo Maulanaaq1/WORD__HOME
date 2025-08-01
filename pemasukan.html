@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="0; URL='pemasukan.html'" />
+  <title>Pemasukan Harian</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { background-color: #f8f9fa; }
+    .card { max-width: 700px; margin: 30px auto; }
+    .navbar-nav .nav-link.active { font-weight: bold; color: #d10000; }
+  </style>
+</head>
+<!-- Bootstrap JS + Popper -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<body>
+
+<!-- Navbar -->
+<!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+  <a class="navbar-brand fw-bold me-5" href="#">
+  <img src="Word.png" alt="Logo" height="30" class="d-inline-block align-text-top">
+  </a>
+
+  <!-- Tombol hamburger -->
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Isi navbar -->
+  <div class="collapse navbar-collapse" id="navbarContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item"><a class="nav-link" href="laporan.html"><i class="fas fa-chart-line"></i> Laporan</a></li>
+      <li class="nav-item"><a class="nav-link" href="absen.html"><i class="fas fa-user-check"></i> Absen</a></li>
+      <li class="nav-item"><a class="nav-link" href="pemasukan.html"><i class="fas fa-wallet"></i> Pemasukan</a></li>
+      <li class="nav-item"><a class="nav-link" href="pengeluaran.html"><i class="fas fa-money-bill-wave"></i> Pengeluaran</a></li>
+      <li class="nav-item"><a class="nav-link" href="asset.html"><i class="fas fa-box"></i> Assets</a></li>
+      <li class="nav-item"><a class="nav-link" href="formulir.html"><i class="fas fa-clipboard"></i> Formulir</a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-check-circle"></i> Approval</a></li>
+      <li class="nav-item"><a class="nav-link" href="pelanggan.html"><i class="fas fa-users"></i> Pelanggan</a></li>
+    </ul>
+    <a class="nav-link text-danger" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+</nav>
+
+
+<!-- Form Pemasukan -->
+<div class="container">
+  <div class="card shadow">
+    <div class="card-header text-center fw-bold">
+      💰 Form Input Pemasukan
+    </div>
+    <div class="card-body">
+      <form id="formPemasukan">
+        <div class="mb-3">
+          <label for="namaTransaksi" class="form-label">Nama Transaksi</label>
+          <input type="text" class="form-control" id="namaTransaksi" required />
+        </div>
+        <div class="mb-3">
+          <label for="jumlah" class="form-label">Jumlah (Rp)</label>
+          <input type="number" class="form-control" id="jumlah" required />
+        </div>
+        <div class="mb-3">
+          <label for="tanggal" class="form-label">Tanggal</label>
+          <input type="date" class="form-control" id="tanggal" required />
+        </div>
+        <div class="mb-3">
+          <label for="keterangan" class="form-label">Keterangan</label>
+          <textarea class="form-control" id="keterangan" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success w-100" style="background-color: #274eec;">Simpan Pemasukan</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tabel Riwayat -->
+  <div class="card shadow mt-4">
+    <div class="card-header fw-bold">
+      📋 Riwayat Pemasukan
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered" id="tabelPemasukan">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Jumlah</th>
+            <th>Tanggal</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button class="btn btn-outline-primary" onclick="exportToExcel()">⬇️ Export ke Excel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Script -->
+<script>
+  const form = document.getElementById('formPemasukan');
+  const tableBody = document.querySelector('#tabelPemasukan tbody');
+
+  const simpanData = (data) => {
+    const list = JSON.parse(localStorage.getItem('pemasukan')) || [];
+    list.push(data);
+    localStorage.setItem('pemasukan', JSON.stringify(list));
+  };
+
+  const tampilkanData = () => {
+  tableBody.innerHTML = '';
+  const list = JSON.parse(localStorage.getItem('pemasukan')) || [];
+  list.forEach((data, index) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${data.nama}</td>
+      <td>Rp ${parseInt(data.jumlah).toLocaleString()}</td>
+      <td>${data.tanggal}</td>
+      <td>${data.keterangan}</td>
+      <td><button class="btn btn-sm btn-danger" onclick="hapusData(${index})"><i class="fas fa-trash-alt"></i></button></td>
+    `;
+    tableBody.appendChild(tr);
+  });
+};
+
+function hapusData(index) {
+  if (confirm('Yakin ingin menghapus data ini?')) {
+    const list = JSON.parse(localStorage.getItem('pemasukan')) || [];
+    list.splice(index, 1);
+    localStorage.setItem('pemasukan', JSON.stringify(list));
+    tampilkanData();
+  }
+}
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const data = {
+      nama: document.getElementById('namaTransaksi').value,
+      jumlah: document.getElementById('jumlah').value,
+      tanggal: document.getElementById('tanggal').value,
+      keterangan: document.getElementById('keterangan').value,
+    };
+    simpanData(data);
+    tampilkanData();
+    form.reset();
+  });
+
+  function exportToExcel() {
+    let table = document.getElementById('tabelPemasukan');
+    let html = table.outerHTML;
+    let url = 'data:application/vnd.ms-excel,' + escape(html);
+    let link = document.createElement('a');
+    link.href = url;
+    link.download = 'riwayat_pemasukan.xls';
+    link.click();
+  }
+
+  // Tampilkan data saat halaman dibuka
+  tampilkanData();
+</script>
+
+</body>
+</html>

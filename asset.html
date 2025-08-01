@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="0; URL='asset.html'">
+  <title>Assets - GENZET HOME</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .container-box {
+      max-width: 750px;
+      margin: 50px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.07);
+    }
+    h3 {
+      font-weight: bold;
+      color: #274eec;
+      margin-bottom: 25px;
+    }
+    .btn-simpan {
+      background-color: #274eec;
+      border: none;
+      font-weight: bold;
+    }
+    .btn-simpan:hover {
+      background-color: #274eec;
+    }
+  </style>
+</head>
+<!-- Bootstrap JS + Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script> 
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+  <a class="navbar-brand fw-bold me-5" href="#">
+  <img src="Word.png" alt="Logo" height="30" class="d-inline-block align-text-top">
+  </a>
+
+  <!-- Tombol hamburger -->
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Isi navbar -->
+  <div class="collapse navbar-collapse" id="navbarContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item"><a class="nav-link" href="laporan.html"><i class="fas fa-chart-line"></i> Laporan</a></li>
+      <li class="nav-item"><a class="nav-link" href="absen.html"><i class="fas fa-user-check"></i> Absen</a></li>
+      <li class="nav-item"><a class="nav-link" href="pemasukan.html"><i class="fas fa-wallet"></i> Pemasukan</a></li>
+      <li class="nav-item"><a class="nav-link" href="pengeluaran.html"><i class="fas fa-money-bill-wave"></i> Pengeluaran</a></li>
+      <li class="nav-item"><a class="nav-link" href="asset.html"><i class="fas fa-box"></i> Assets</a></li>
+      <li class="nav-item"><a class="nav-link" href="formulir.html"><i class="fas fa-clipboard"></i> Formulir</a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-check-circle"></i> Approval</a></li>
+      <li class="nav-item"><a class="nav-link" href="pelanggan.html"><i class="fas fa-users"></i> Pelanggan</a></li>
+    </ul>
+    <a class="nav-link text-danger" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+</nav>
+
+  <!-- Form Input Aset -->
+  <div class="container container-box">
+    <h3><i class="fas fa-box"></i> Input Aset / Inventaris</h3>
+    <form id="assetForm">
+      <div class="mb-3">
+        <label for="nama" class="form-label">📦 Nama Aset</label>
+        <input type="text" class="form-control" id="nama" placeholder="Masukan" required>
+      </div>
+      <div class="mb-3">
+        <label for="jumlah" class="form-label">🔢 Jumlah</label>
+        <input type="number" class="form-control" id="jumlah" placeholder="Masukan" required>
+      </div>
+      <div class="mb-3">
+        <label for="lokasi" class="form-label">📍 Lokasi Penyimpanan</label>
+        <input type="text" class="form-control" id="lokasi" placeholder="Masukan">
+      </div>
+      <div class="mb-3">
+        <label for="kondisi" class="form-label">✅ Kondisi</label>
+        <select class="form-select" id="kondisi">
+          <option>Bagus</option>
+          <option>Butuh Servis</option>
+          <option>Rusak</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-simpan w-100">Simpan Aset</button>
+    </form>
+  </div>
+
+  <!-- Tabel Riwayat Aset -->
+  <div class="container mt-4">
+    <div class="table-responsive">
+      <h5 class="mb-3">📋 Data Aset Tersimpan</h5>
+      <table class="table table-striped" id="tabelAset">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>Jumlah</th>
+            <th>Lokasi</th>
+            <th>Kondisi</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('assetForm');
+    const tbody = document.querySelector('#tabelAset tbody');
+    let asetData = [];
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nama = document.getElementById('nama').value;
+      const jumlah = document.getElementById('jumlah').value;
+      const lokasi = document.getElementById('lokasi').value;
+      const kondisi = document.getElementById('kondisi').value;
+
+      asetData.push({ nama, jumlah, lokasi, kondisi });
+      renderTable();
+      form.reset();
+    });
+
+    function renderTable() {
+      tbody.innerHTML = '';
+      asetData.forEach((item, index) => {
+        const row = `<tr>
+          <td>${index + 1}</td>
+          <td>${item.nama}</td>
+          <td>${item.jumlah}</td>
+          <td>${item.lokasi}</td>
+          <td>${item.kondisi}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+  </script>
+</body>
+</html>

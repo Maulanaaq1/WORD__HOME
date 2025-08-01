@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="0; URL='index.html'"/>
+  <title>Login - WORD</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(120deg, #274eec, #1a237e);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-container {
+      background: white;
+      padding: 3rem 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-container h2 {
+      text-align: center;
+      color: #274eec;
+      margin-bottom: 1.5rem;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .login-container button {
+      background: #274eec;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .login-container button:hover {
+      background: #1d3dcc;
+    }
+
+    .login-container .icon {
+      text-align: center;
+      font-size: 50px;
+      color: #274eec;
+      margin-bottom: 10px;
+    }
+
+    .error-message {
+      color: red;
+      text-align: center;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="icon">
+      <i class="fas fa-wifi"></i>
+    </div>
+    <h2>Login Admin</h2>
+    <div id="error" class="error-message"></div>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Masuk</button>
+  </div>
+
+  <script>
+    function login() {
+  const user = document.getElementById('username').value;
+  const pass = document.getElementById('password').value;
+  const error = document.getElementById('error');
+
+  if (user === 'Maulana@Word.com' && pass === 'Admin12345') {
+    localStorage.setItem('loggedIn', 'true');
+    window.location.href = 'laporan.html';
+  } else {
+    error.textContent = 'Username atau password salah!';
+  }
+}
+  </script>
+</body>
+</html>

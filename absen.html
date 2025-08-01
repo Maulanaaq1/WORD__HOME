@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="0; URL='absen.html'" />
+  <title>Halaman Absen</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+    h1, h3 {
+      color: #274eec;
+    }
+    form {
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, select {
+      padding: 10px;
+      margin-bottom: 15px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #274eec;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #274eec;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+    #konfirmasi {
+      margin-top: 15px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Bootstrap JS + Popper -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<body> 
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+  <a class="navbar-brand fw-bold me-5" href="#">
+  <img src="Word.png" alt="Logo" height="30" class="d-inline-block align-text-top">
+  </a>
+
+  <!-- Tombol hamburger -->
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Isi navbar -->
+  <div class="collapse navbar-collapse" id="navbarContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item"><a class="nav-link" href="laporan.html"><i class="fas fa-chart-line"></i> Laporan</a></li>
+      <li class="nav-item"><a class="nav-link" href="absen.html"><i class="fas fa-user-check"></i> Absen</a></li>
+      <li class="nav-item"><a class="nav-link" href="pemasukan.html"><i class="fas fa-wallet"></i> Pemasukan</a></li>
+      <li class="nav-item"><a class="nav-link" href="pengeluaran.html"><i class="fas fa-money-bill-wave"></i> Pengeluaran</a></li>
+      <li class="nav-item"><a class="nav-link" href="asset.html"><i class="fas fa-box"></i> Assets</a></li>
+      <li class="nav-item"><a class="nav-link" href="formulir.html"><i class="fas fa-clipboard"></i> Formulir</a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-check-circle"></i> Approval</a></li>
+      <li class="nav-item"><a class="nav-link" href="pelanggan.html"><i class="fas fa-users"></i> Pelanggan</a></li>
+    </ul>
+    <a class="nav-link text-danger" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+</nav>
+  <h1>📝 Form Absen</h1>
+  <form onsubmit="submitAbsen(event)">
+    <label for="nama">Nama:</label>
+    <input type="text" id="nama" required />
+
+    <label for="status">Status:</label>
+    <select id="status" required>
+      <option value="">-- Pilih Status --</option>
+      <option value="Hadir">Hadir</option>
+      <option value="Izin">Izin</option>
+      <option value="Sakit">Instalasi</option>
+      <option value="Alpha">Alpha</option>
+    </select>
+
+    <button type="submit">Simpan Absen</button>
+    <p id="konfirmasi"></p>
+  </form>
+
+  <h3>📊 Rekap Absen Hari Ini</h3>
+  <table id="rekapTable">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Status</th>
+        <th>Waktu</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button onclick="exportTableToExcel()">⬇️ Export ke Excel</button>
+
+  <script>
+    const tableBody = document.querySelector("#rekapTable tbody");
+
+    function submitAbsen(event) {
+      event.preventDefault();
+      const nama = document.getElementById('nama').value;
+      const status = document.getElementById('status').value;
+      const waktu = new Date().toLocaleString();
+
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${nama}</td><td>${status}</td><td>${waktu}</td>`;
+      tableBody.appendChild(row);
+
+      const dataAbsen = JSON.parse(localStorage.getItem("absenData")) || [];
+      dataAbsen.push({ nama, status, waktu });
+      localStorage.setItem("absenData", JSON.stringify(dataAbsen));
+
+      document.getElementById('konfirmasi').innerText =
+        `✅ Absen untuk ${nama} berhasil dicatat sebagai \"${status}\".`;
+
+      document.getElementById("nama").value = "";
+      document.getElementById("status").value = "";
+    }
+
+    window.onload = () => {
+      const dataAbsen = JSON.parse(localStorage.getItem("absenData")) || [];
+      dataAbsen.forEach(({ nama, status, waktu }) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${nama}</td><td>${status}</td><td>${waktu}</td>`;
+        tableBody.appendChild(row);
+      });
+    };
+
+    function exportTableToExcel() {
+      let table = document.getElementById("rekapTable");
+      let html = table.outerHTML;
+      let url = 'data:application/vnd.ms-excel,' + escape(html);
+      let link = document.createElement("a");
+      link.href = url;
+      link.download = "rekap_absen.xls";
+      link.click();
+    }
+  </script>
+</body>
+</html>
