@@ -5,23 +5,26 @@ setlocal
 cd /d "%~dp0"
 
 echo ==============================
-echo  🚀 Sinkronisasi Data WiFi...
+echo  🚀 Update Web WiFi Word Live...
 echo ==============================
 
-:: Ambil perubahan terbaru dulu (auto merge)
-git pull origin main --no-edit
+:: Pastikan di branch gh-pages
+git checkout gh-pages
+
+:: Ambil update terbaru dulu (biar nyatu sama tim)
+git pull origin gh-pages --no-edit
 
 :: Tambahkan semua perubahan
 git add .
 
 :: Commit dengan waktu sekarang
-git commit -m "Update WiFi Data %date% %time%"
+git commit -m "Update Live Web %date% %time%"
 
-:: Push ke GitHub
-git push origin main
+:: Push ke GitHub Pages
+git push origin gh-pages
 
 :: Popup sukses
-mshta "javascript:alert('✅ Data WiFi berhasil diupload & disinkronkan!');close()"
+mshta "javascript:alert('✅ Web WiFi Word berhasil diupdate! Silakan refresh halaman.');close()"
 
 echo Selesai ✅
 pause
