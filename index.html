@@ -128,5 +128,54 @@
   }
 }
   </script>
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+  // Config Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyDCougF9lDyP70dCwngEQApRMgk6VPRj90",
+    authDomain: "wordhome-9ffd0.firebaseapp.com",
+    databaseURL: "https://wordhome-9ffd0-default-rtdb.firebaseio.com",
+    projectId: "wordhome-9ffd0",
+    storageBucket: "wordhome-9ffd0.firebasestorage.app",
+    messagingSenderId: "907251172383",
+    appId: "1:907251172383:web:d71150b40f0b274994c12a",
+    measurementId: "G-WL5VGK0W4J"
+  };
+
+  // Inisialisasi Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Referensi ke path "asset"
+  var assetDB = firebase.database().ref("asset");
+
+  // Event listener form
+  document.getElementById('assetForm').addEventListener('submit', submitAsset);
+
+  function submitAsset(e) {
+    e.preventDefault();
+
+    // Ambil nilai dari input
+    var nama = document.getElementById('nama').value;
+    var jumlah = document.getElementById('jumlah').value;
+    var lokasi = document.getElementById('lokasi').value;
+    var kondisi = document.getElementById('kondisi').value;
+
+    // Simpan ke Firebase (pakai push biar auto ID)
+    var newAsset = assetDB.push();
+    newAsset.set({
+      nama: nama,
+      jumlah: jumlah,
+      lokasi: lokasi,
+      kondisi: kondisi,
+      tanggalInput: new Date().toISOString() // simpan tanggal input juga
+    });
+
+    alert("Aset berhasil disimpan!");
+    document.getElementById('assetForm').reset();
+  }
+</script>
 </body>
 </html>

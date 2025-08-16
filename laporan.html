@@ -1,67 +1,27 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="0; URL='laporan.html'">
-  <title>WORD NET</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laporan - WORD NET</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.0.0/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    body {
-      background-color: #f7f7f7;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    .nav-link {
-      font-weight: 600;
-    }
-
-    .card-box {
-      border-radius: 10px;
-      padding: 20px;
-      color: #fff;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 600;
-      height: 130px;
-    }
-
-    .card-title {
-      font-size: 1rem;
-      font-weight: 500;
-    }
-
-    .card-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    #chart {
-      width: 100%;
-      height: 400px;
-      margin-top: 50px;
-    }
+    .card-summary { border-radius: 15px; }
+    .card-summary h4 { font-weight: bold; }
   </style>
 </head>
-<!-- Bootstrap JS + Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script> 
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
-  <a class="navbar-brand fw-bold me-5" href="#">
-  <img src="Word.png" alt="Logo" height="30" class="d-inline-block align-text-top">
-  </a>
 
-  <!-- Tombol hamburger -->
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+  <a class="navbar-brand fw-bold me-5" href="#">
+    <img src="Word.png" alt="Logo" height="30" class="d-inline-block align-text-top">
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
     <span class="navbar-toggler-icon"></span>
   </button>
-
-  <!-- Isi navbar -->
+<!-- Isi navbar -->
   <div class="collapse navbar-collapse" id="navbarContent">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <li class="nav-item"><a class="nav-link" href="laporan.html"><i class="fas fa-chart-line"></i> Laporan</a></li>
@@ -69,185 +29,119 @@
       <li class="nav-item"><a class="nav-link" href="pemasukan.html"><i class="fas fa-wallet"></i> Pemasukan</a></li>
       <li class="nav-item"><a class="nav-link" href="pengeluaran.html"><i class="fas fa-money-bill-wave"></i> Pengeluaran</a></li>
       <li class="nav-item"><a class="nav-link" href="asset.html"><i class="fas fa-box"></i> Assets</a></li>
-      <li class="nav-item"><a class="nav-link" href="Ins.html"><i class="fas fa-clipboard"></i> Instalasi</a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-check-circle"></i> Approval</a></li>
+      <li class="nav-item"><a class="nav-link" href="Instalasi.html"><i class="fas fa-clipboard"></i> Instalasi</a></li>
+      <li class="nav-item"><a class="nav-link" href="Approval.html"><i class="fas fa-check-circle"></i> Approval</a></li>
       <li class="nav-item"><a class="nav-link" href="pelanggan.html"><i class="fas fa-users"></i> Pelanggan</a></li>
     </ul>
     <a class="nav-link text-danger" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
 </nav>
 
- <div class="container mt-4">
+
+<div class="container my-4">
+  <h3 class="mb-4 fw-bold text-center">📊 Dashboard Laporan</h3>
+
+  <!-- Ringkasan -->
   <div class="row g-3">
-    <!-- Reusable Card -->
-    <script>
-      const laporan = JSON.parse(localStorage.getItem('laporan')) || {
-        pemasukan: 7379333,
-        pengeluaran: 6929333,
-        assets: 2549000,
-        pelanggan: 9,
-        tetap: 1350000,
-        mbps: 180,
-        saldo: 450000
-      };
-    </script>
-
-    <div class="mt-4">
-  <h5><i class="fas fa-microphone"></i> Penyebutan Otomatis</h5>
-  <p id="penyebutan" style="font-size: 16px; color: #333;"></p>
-</div>
-
-    <div class="col-md-4">
-      <div class="card-box bg-success">
-        <div class="card-title">Total Pemasukan</div>
-        <input type="number" class="form-control mt-2" value="" id="pemasukan">
+    <div class="col-md-3">
+      <div class="card card-summary shadow text-center p-3 bg-success text-white">
+        <h4>Total Pemasukan</h4>
+        <p id="totalPemasukan">Rp 0</p>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card-box bg-danger">
-        <div class="card-title">Total Pengeluaran</div>
-        <input type="number" class="form-control mt-2" value="" id="pengeluaran">
+    <div class="col-md-3">
+      <div class="card card-summary shadow text-center p-3 bg-danger text-white">
+        <h4>Total Pengeluaran</h4>
+        <p id="totalPengeluaran">Rp 0</p>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card-box bg-warning text-dark">
-        <div class="card-title">Total Assets</div>
-        <input type="number" class="form-control mt-2" value="" id="assets">
+    <div class="col-md-3">
+      <div class="card card-summary shadow text-center p-3 bg-primary text-white">
+        <h4>Total Pelanggan</h4>
+        <p id="totalPelanggan">0</p>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card-box bg-primary">
-        <div class="card-title">Total Pelanggan</div>
-        <input type="number" class="form-control mt-2" value="" id="pelanggan">
+    <div class="col-md-3">
+      <div class="card card-summary shadow text-center p-3 bg-warning text-dark">
+        <h4>Total Asset</h4>
+        <p id="totalAsset">0</p>
       </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-box bg-dark">
-        <div class="card-title">Penghasilan Tetap</div>
-        <input type="number" class="form-control mt-2" value="" id="tetap">
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-box" style="background-color:#7b2cbf;">
-        <div class="card-title text-white">Mbps Tersebar</div>
-        <input type="number" class="form-control mt-2" value="" id="mbps">
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-box bg-info text-dark">
-        <div class="card-title">Saldo Akhir</div>
-        <input type="number" class="form-control mt-2" value="" id="saldo">
-      </div>
-    </div>
-    <div class="col-md-12 text-end">
-      <button class="btn btn-primary mt-2" onclick="simpanLaporan()">Simpan Laporan</button>
     </div>
   </div>
 
-  <!-- Chart Candlestick TradingView Style -->
-  <div id="chart"></div>
-</div>
-
-
-    <!-- Chart Candlestick TradingView Style -->
-    <div id="chart"></div>
+  <!-- Grafik -->
+  <div class="card shadow mt-4 p-3">
+    <h5 class="fw-bold text-center">Grafik Pemasukan vs Pengeluaran</h5>
+    <canvas id="chartKeuangan"></canvas>
   </div>
-
-  <script>
-    const chart = LightweightCharts.createChart(document.getElementById("chart"), {
-      layout: {
-        backgroundColor: '#f7f7f7',
-        textColor: '#000',
-      },
-      grid: {
-        vertLines: { color: '#eee' },
-        horzLines: { color: '#eee' },
-      },
-      timeScale: {
-        timeVisible: true,
-        secondsVisible: false,
-      },
-    });
-
-
-    const candleSeries = chart.addCandlestickSeries();
-
-    // Simulasi data dinamis (bisa diganti dengan backend/API nantinya)
-    candleSeries.setData([
-      { time: '2025-07-01', open: 430000, high: 450000, low: 410000, close: 440000 },
-      { time: '2025-07-02', open: 440000, high: 460000, low: 430000, close: 455000 },
-      { time: '2025-07-03', open: 455000, high: 470000, low: 450000, close: 460000 },
-      { time: '2025-07-04', open: 460000, high: 470000, low: 445000, close: 448000 },
-      { time: '2025-07-05', open: 448000, high: 455000, low: 430000, close: 435000 },
-      { time: '2025-07-06', open: 435000, high: 445000, low: 420000, close: 430000 },
-      { time: '2025-07-07', open: 430000, high: 440000, low: 410000, close: 415000 },
-    ]);
-  </script>
-  <script>
-  // Tampilkan nilai awal
-  window.onload = () => {
-    document.getElementById('pemasukan').value = laporan.pemasukan;
-    document.getElementById('pengeluaran').value = laporan.pengeluaran;
-    document.getElementById('assets').value = laporan.assets;
-    document.getElementById('pelanggan').value = laporan.pelanggan;
-    document.getElementById('tetap').value = laporan.tetap;
-    document.getElementById('mbps').value = laporan.mbps;
-    document.getElementById('saldo').value = laporan.saldo;
-  };
-
-  function simpanLaporan() {
-    const dataBaru = {
-      pemasukan: parseInt(document.getElementById('pemasukan').value),
-      pengeluaran: parseInt(document.getElementById('pengeluaran').value),
-      assets: parseInt(document.getElementById('assets').value),
-      pelanggan: parseInt(document.getElementById('pelanggan').value),
-      tetap: parseInt(document.getElementById('tetap').value),
-      mbps: parseInt(document.getElementById('mbps').value),
-      saldo: parseInt(document.getElementById('saldo').value),
-    };
-    localStorage.setItem('laporan', JSON.stringify(dataBaru));
-    alert('Data berhasil disimpan!');
-
-    <div class="mt-4">
-  <h5><i class="fas fa-microphone"></i> Penyebutan Otomatis</h5>
-  <p id="penyebutan" style="font-size: 16px; color: #333;"></p>
 </div>
-  }
-</script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
-  function updatePenyebutan() {
-    const data = JSON.parse(localStorage.getItem('laporan')) || {};
-    const kalimat = `Total pemasukan bulan ini adalah Rp ${data.pemasukan?.toLocaleString() || 0} dan pengeluaran sebesar Rp ${data.pengeluaran?.toLocaleString() || 0}, sehingga saldo akhir adalah Rp ${data.saldo?.toLocaleString() || 0}.`;
-    document.getElementById('penyebutan').innerText = kalimat;
-  }
-
-  window.onload = () => {
-    const laporan = JSON.parse(localStorage.getItem('laporan')) || {};
-    document.getElementById('pemasukan').value = laporan.pemasukan || 0;
-    document.getElementById('pengeluaran').value = laporan.pengeluaran || 0;
-    document.getElementById('assets').value = laporan.assets || 0;
-    document.getElementById('pelanggan').value = laporan.pelanggan || 0;
-    document.getElementById('tetap').value = laporan.tetap || 0;
-    document.getElementById('mbps').value = laporan.mbps || 0;
-    document.getElementById('saldo').value = laporan.saldo || 0;
-    updatePenyebutan();
+  const firebaseConfig = {
+    apiKey: "AIzaSyDCougF9lDyP70dCwngEQApRMgk6VPRj90",
+    authDomain: "wordhome-9ffd0.firebaseapp.com",
+    databaseURL: "https://wordhome-9ffd0-default-rtdb.firebaseio.com",
+    projectId: "wordhome-9ffd0",
+    storageBucket: "wordhome-9ffd0.firebasestorage.app",
+    messagingSenderId: "907251172383",
+    appId: "1:907251172383:web:d71150b40f0b274994c12a",
+    measurementId: "G-WL5VGK0W4J"
   };
+  if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 
-  function simpanLaporan() {
-    const dataBaru = {
-      pemasukan: parseInt(document.getElementById('pemasukan').value),
-      pengeluaran: parseInt(document.getElementById('pengeluaran').value),
-      assets: parseInt(document.getElementById('assets').value),
-      pelanggan: parseInt(document.getElementById('pelanggan').value),
-      tetap: parseInt(document.getElementById('tetap').value),
-      mbps: parseInt(document.getElementById('mbps').value),
-      saldo: parseInt(document.getElementById('saldo').value),
-    };
-    localStorage.setItem('laporan', JSON.stringify(dataBaru));
-    updatePenyebutan();
-    alert('Data berhasil disimpan!');
+  const pemasukanDB = firebase.database().ref("pemasukan");
+  const pengeluaranDB = firebase.database().ref("pengeluaran");
+  const pelangganDB = firebase.database().ref("pelanggan");
+  const assetDB = firebase.database().ref("asset");
+
+  let totalMasuk = 0, totalKeluar = 0;
+
+  pemasukanDB.on("value", snap=>{
+    totalMasuk = 0;
+    snap.forEach(c => totalMasuk += parseInt(c.val().jumlah || 0));
+    document.getElementById("totalPemasukan").innerText = "Rp " + totalMasuk.toLocaleString("id-ID");
+    updateChart();
+  });
+
+  pengeluaranDB.on("value", snap=>{
+    totalKeluar = 0;
+    snap.forEach(c => totalKeluar += parseInt(c.val().jumlah || 0));
+    document.getElementById("totalPengeluaran").innerText = "Rp " + totalKeluar.toLocaleString("id-ID");
+    updateChart();
+  });
+
+  pelangganDB.on("value", snap=>{
+    let count = snap.numChildren();
+    document.getElementById("totalPelanggan").innerText = count;
+  });
+
+  assetDB.on("value", snap=>{
+    let count = snap.numChildren();
+    document.getElementById("totalAsset").innerText = count;
+  });
+
+  // Chart
+  let chart;
+  function updateChart(){
+    const ctx = document.getElementById("chartKeuangan").getContext("2d");
+    if(chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Pemasukan", "Pengeluaran"],
+        datasets: [{
+          label: "Jumlah (Rp)",
+          data: [totalMasuk, totalKeluar],
+          backgroundColor: ["#28a745", "#dc3545"]
+        }]
+      }
+    });
   }
 </script>
-</body>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

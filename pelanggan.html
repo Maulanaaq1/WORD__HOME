@@ -2,39 +2,25 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="0; URL='pelanggan.html'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Data Pelanggan - WORD NET</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    tbody tr:nth-child(even) {
-      background-color: #e5e9fd;
-    }
-    tbody tr:nth-child(odd) {
-      background-color: #f3f4ff;
-    }
+    tbody tr:nth-child(even) { background-color: #e5e9fd; }
+    tbody tr:nth-child(odd) { background-color: #f3f4ff; }
   </style>
 </head>
-<!-- Bootstrap JS + Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script> 
 <body>
 
 <!-- Navbar -->
-<!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
   <a class="navbar-brand fw-bold me-5" href="#">
-  <img src="Word.png" alt="Logo" height="30" class="d-inline-block align-text-top">
+    <img src="Word.png" alt="Logo" height="30" class="d-inline-block align-text-top">
   </a>
-
-  <!-- Tombol hamburger -->
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
     <span class="navbar-toggler-icon"></span>
   </button>
-
-  <!-- Isi navbar -->
   <div class="collapse navbar-collapse" id="navbarContent">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <li class="nav-item"><a class="nav-link" href="laporan.html"><i class="fas fa-chart-line"></i> Laporan</a></li>
@@ -43,22 +29,23 @@
       <li class="nav-item"><a class="nav-link" href="pengeluaran.html"><i class="fas fa-money-bill-wave"></i> Pengeluaran</a></li>
       <li class="nav-item"><a class="nav-link" href="asset.html"><i class="fas fa-box"></i> Assets</a></li>
       <li class="nav-item"><a class="nav-link" href="Instalasi.html"><i class="fas fa-clipboard"></i> Instalasi</a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-check-circle"></i> Approval</a></li>
-      <li class="nav-item"><a class="nav-link" href="pelanggan.html"><i class="fas fa-users"></i> Pelanggan</a></li>
+      <li class="nav-item"><a class="nav-link" href="Approval.html"><i class="fas fa-check-circle"></i> Approval</a></li>
+      <li class="nav-item"><a class="nav-link active" href="pelanggan.html"><i class="fas fa-users"></i> Pelanggan</a></li>
     </ul>
     <a class="nav-link text-danger" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
 </nav>
 
 <div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3 class="text-success"><i class="fas fa-users"></i> Data Pelanggan</h3>
-    <button class="btn btn-outline-danger" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
-  </div>
+  <h3 class="text-success mb-3"><i class="fas fa-users"></i> Data Pelanggan</h3>
+  
+  <!-- Cari -->
   <input type="text" id="searchInput" class="form-control mb-3" placeholder="Cari nama pelanggan...">
-  <div class="table-responsive">
-    <table class="table table-bordered" id="tabelPelanggan">
-      <thead style="background-color: #274eec; color: white;">
+
+  <!-- Tabel Pelanggan -->
+  <div class="table-responsive card shadow">
+    <table class="table table-bordered mb-0" id="tabelPelanggan">
+      <thead style="background-color:#274eec; color:white;">
         <tr>
           <th>Nama</th>
           <th>Email</th>
@@ -73,61 +60,54 @@
   </div>
 </div>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
-  let data = JSON.parse(localStorage.getItem('pelanggan')) || [];
+  const firebaseConfig = {
+    apiKey: "AIzaSyDCougF9lDyP70dCwngEQApRMgk6VPRj90",
+    authDomain: "wordhome-9ffd0.firebaseapp.com",
+    databaseURL: "https://wordhome-9ffd0-default-rtdb.firebaseio.com",
+    projectId: "wordhome-9ffd0",
+    storageBucket: "wordhome-9ffd0.firebasestorage.app",
+    messagingSenderId: "907251172383",
+    appId: "1:907251172383:web:d71150b40f0b274994c12a",
+    measurementId: "G-WL5VGK0W4J"
+  };
+  firebase.initializeApp(firebaseConfig);
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const tbody = document.querySelector('#tabelPelanggan tbody');
-    const searchInput = document.getElementById('searchInput');
+  const pelangganDB = firebase.database().ref("pelanggan");
+  const tbody = document.querySelector("#tabelPelanggan tbody");
+  const searchInput = document.getElementById("searchInput");
 
-    function renderTable(filter = '') {
-      tbody.innerHTML = '';
-      data.forEach((p, index) => {
-        if (p.nama.toLowerCase().includes(filter.toLowerCase())) {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${p.nama}</td>
-            <td>${p.email}</td>
-            <td>${p.alamat}, RT ${p.rt}/RW ${p.rw}, Kel. ${p.kelurahan}, Kec. ${p.kecamatan}, ${p.kota}, ${p.provinsi}, ${p.kodepos}</td>
-            <td>${p.telepon}</td>
-            <td>${p.paket}</td>
-            <td><button class="btn btn-sm btn-danger" onclick="hapusPelanggan(${index})"><i class="fas fa-trash-alt"></i></button></td>
-          `;
-          tbody.appendChild(row);
-        }
-      });
+  function renderTable(data, filter=""){
+    tbody.innerHTML = "";
+    for(let id in data){
+      const p = data[id];
+      if(p.nama && p.nama.toLowerCase().includes(filter.toLowerCase())){
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${p.nama}</td>
+          <td>${p.email || "-"}</td>
+          <td>${p.alamat || "-"}</td>
+          <td>${p.notelpon || "-"}</td>
+          <td>${p.paket || "-"}</td>
+          <td><button class="btn btn-sm btn-danger" onclick="hapus('${id}')"><i class="fas fa-trash"></i></button></td>
+        `;
+        tbody.appendChild(tr);
+      }
     }
+  }
 
-    renderTable();
-
-    searchInput.addEventListener('input', (e) => {
-      renderTable(e.target.value);
-    });
+  pelangganDB.on("value", snap => renderTable(snap.val() || {}));
+  searchInput.addEventListener("input", e => {
+    pelangganDB.once("value").then(snap => renderTable(snap.val() || {}, e.target.value));
   });
 
-  function hapusPelanggan(index) {
-    if (confirm('Yakin ingin menghapus pelanggan ini?')) {
-      data.splice(index, 1);
-      localStorage.setItem('pelanggan', JSON.stringify(data));
-      renderTable(document.getElementById('searchInput').value);
-    }
-  }
-
-  function exportPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.text("Data Pelanggan GENZET HOME", 10, 10);
-
-    let y = 20;
-    const dataExport = JSON.parse(localStorage.getItem('pelanggan')) || [];
-    dataExport.forEach((p, index) => {
-      doc.text(`${index + 1}. ${p.nama}, ${p.email}, ${p.telepon}, ${p.paket}`, 10, y);
-      y += 10;
-    });
-
-    doc.save("data_pelanggan.pdf");
+  function hapus(id){
+    if(confirm("Hapus pelanggan ini?")) pelangganDB.child(id).remove();
   }
 </script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
