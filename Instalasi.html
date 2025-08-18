@@ -117,12 +117,16 @@
 
     // Simpan ke pelanggan juga
     pelangganDB.push({
-      nama: data.nama,
-      email: data.email,
-      alamat: data.alamat,
-      notelpon: data.telepon,
-      paket: data.paket
-    });
+  nama: data.nama,
+  email: data.email,
+  alamat: data.alamat,
+  notelpon: data.telepon,
+  paket: data.paket,
+  tanggalPasang: data.tanggal || new Date().toISOString().split("T")[0],
+  jatuhTempo: 1,
+  wa: data.telepon, 
+  pembayaran: {}
+});
 
     alert("✅ Data instalasi & pelanggan berhasil disimpan!");
     e.target.reset();

@@ -172,6 +172,31 @@
     });
   });
 </script>
+<script>
+// Format angka ke format Rupiah (ribuan)
+function formatRupiah(angka) {
+  let number_string = angka.replace(/[^,\d]/g, "").toString(),
+    split = number_string.split(","),
+    sisa = split[0].length % 3,
+    rupiah = split[0].substr(0, sisa),
+    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+  if (ribuan) {
+    let separator = sisa ? "." : "";
+    rupiah += separator + ribuan.join(".");
+  }
+
+  return split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+}
+
+// Event listener untuk input jumlah
+const inputJumlah = document.getElementById("jumlah");
+
+inputJumlah.addEventListener("input", function (e) {
+  let value = this.value.replace(/\./g, ""); // hapus titik biar gak numpuk
+  this.value = formatRupiah(value);          // tampilkan hasil dengan titik
+});
+
 </script>
 </body>
 </html>

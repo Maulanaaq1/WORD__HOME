@@ -6,14 +6,13 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
 <style>
 body { font-family: Arial, sans-serif; background: #f8f9fa; }
-.navbar-custom { background-color: #f4f4f4; }
-.navbar-custom .nav-link, .navbar-custom .navbar-brand { color: rgb(0, 0, 0); }
-.navbar-custom .nav-link:hover { color: #dcefff; }
-.navbar-custom .text-danger { color: #f00909 !important; font-weight: bold; }
 .container { max-width: 1200px; margin-top: 20px; }
-.card { margin-bottom: 20px; }
+.card { margin-bottom: 20px; border-radius: 12px; }
+.stat-card { text-align: center; padding: 20px; border-radius: 12px; }
+.stat-value { font-size: 1.8rem; font-weight: bold; }
 .badge-lunas { background-color: #28a745; color:white; padding:5px; border-radius:5px;}
 .badge-belum { background-color: #dc3545; color:white; padding:5px; border-radius:5px;}
 .near-due { background-color: #fff3cd !important; }
@@ -21,74 +20,81 @@ body { font-family: Arial, sans-serif; background: #f8f9fa; }
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-custom">
-  <div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+  <a class="navbar-brand fw-bold me-5" href="#">
     <img src="Word.png" alt="Logo" height="30" class="d-inline-block align-text-top">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="laporan.html"><i class="fas fa-chart-line"></i> Laporan</a></li>
-        <li class="nav-item"><a class="nav-link" href="absen.html"><i class="fas fa-user-check"></i> Absen</a></li>
-        <li class="nav-item"><a class="nav-link" href="pemasukan.html"><i class="fas fa-wallet"></i> Pemasukan</a></li>
-        <li class="nav-item"><a class="nav-link" href="pengeluaran.html"><i class="fas fa-money-bill-wave"></i> Pengeluaran</a></li>
-        <li class="nav-item"><a class="nav-link" href="asset.html"><i class="fas fa-box"></i> Assets</a></li>
-        <li class="nav-item"><a class="nav-link" href="Instalasi.html"><i class="fas fa-clipboard"></i> Instalasi</a></li>
-        <li class="nav-item"><a class="nav-link" href="Approval.html"><i class="fas fa-check-circle"></i> Approval</a></li>
-        <li class="nav-item"><a class="nav-link" href="pelanggan.html"><i class="fas fa-users"></i> Pelanggan</a></li>
-      </ul>
-      <a class="nav-link text-danger" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
-    </div>
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item"><a class="nav-link" href="laporan.html"><i class="fas fa-chart-line"></i> Laporan</a></li>
+      <li class="nav-item"><a class="nav-link" href="absen.html"><i class="fas fa-user-check"></i> Absen</a></li>
+      <li class="nav-item"><a class="nav-link" href="pemasukan.html"><i class="fas fa-wallet"></i> Pemasukan</a></li>
+      <li class="nav-item"><a class="nav-link" href="pengeluaran.html"><i class="fas fa-money-bill-wave"></i> Pengeluaran</a></li>
+      <li class="nav-item"><a class="nav-link" href="asset.html"><i class="fas fa-box"></i> Assets</a></li>
+      <li class="nav-item"><a class="nav-link" href="Instalasi.html"><i class="fas fa-clipboard"></i> Instalasi</a></li>
+      <li class="nav-item"><a class="nav-link" href="Approval.html"><i class="fas fa-check-circle"></i> Approval</a></li>
+      <li class="nav-item"><a class="nav-link" href="pelanggan.html"><i class="fas fa-users"></i> Pelanggan</a></li>
+    </ul>
+    <a class="nav-link text-danger" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
 </nav>
 
 <div class="container">
 
-<!-- Form Input Pelanggan -->
-<div class="card shadow-sm">
-    <div class="card-header bg-primary text-white"><i class="fas fa-user-plus"></i> Input Pelanggan</div>
-    <div class="card-body">
-        <form id="pelangganForm">
-            <div class="row g-2">
-                <div class="col-md-3">
-                    <input type="text" class="form-control" id="nama" placeholder="Nama Pelanggan" required>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" id="alamat" placeholder="Alamat" required>
-                </div>
-                <div class="col-md-2">
-                    <input type="date" class="form-control" id="tanggalPasang" required>
-                </div>
-                <div class="col-md-2">
-                    <input type="number" class="form-control" id="jatuhTempo" placeholder="Tanggal Jatuh Tempo" required>
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary w-100">Simpan</button>
-                </div>
-            </div>
-        </form>
+<!-- Statistik -->
+<div class="row mb-4">
+  <div class="col-md-3">
+    <div class="card stat-card shadow-sm">
+      <div>Total Customers</div>
+      <div class="stat-value" id="totalCust">0</div>
+      <i class="fas fa-users text-primary"></i>
     </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card stat-card shadow-sm">
+      <div>Paid This Month</div>
+      <div class="stat-value text-success" id="paidCust">0</div>
+      <i class="fas fa-check-circle text-success"></i>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card stat-card shadow-sm">
+      <div>Pending Payment</div>
+      <div class="stat-value text-warning" id="pendingCust">0</div>
+      <i class="fas fa-clock text-warning"></i>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card stat-card shadow-sm">
+      <div>Overdue</div>
+      <div class="stat-value text-danger" id="overdueCust">0</div>
+      <i class="fas fa-exclamation-circle text-danger"></i>
+    </div>
+  </div>
 </div>
 
 <!-- Tabel Pelanggan -->
 <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white"><i class="fas fa-users"></i> Status Pembayaran Bulan Ini</div>
-    <div class="card-body">
-        <table id="tabelPelanggan" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Nama</th>
-                    <th>Alamat</th>
-                    <th>Tanggal Pasang</th>
-                    <th>Jatuh Tempo</th>
-                    <th>Status Bayar</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
+  <div class="card-header bg-primary text-white"><i class="fas fa-users"></i> Status Pembayaran Bulan Ini</div>
+  <div class="card-body">
+    <table id="tabelPelanggan" class="table table-striped table-bordered" style="width:100%">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Alamat</th>
+          <th>Tanggal Pasang</th>
+          <th>Jatuh Tempo</th>
+          <th>No. WA</th>
+          <th>Status Bayar</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </div>
 
 </div>
@@ -100,6 +106,13 @@ body { font-family: Arial, sans-serif; background: #f8f9fa; }
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
 <script>
 $(document).ready(function(){
@@ -117,48 +130,76 @@ $(document).ready(function(){
 
     var pelangganDB = firebase.database().ref("pelanggan");
     var dataTable;
+    
+    function renderTable(data){
+    const tbody = $('#tabelPelanggan tbody');
+    tbody.empty();
+    const today = new Date();
+    const bulanIni = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0');
 
-    $('#pelangganForm').on('submit', function(e){
-        e.preventDefault();
-        var nama = $('#nama').val();
-        var alamat = $('#alamat').val();
-        var tanggalPasang = $('#tanggalPasang').val();
-        var jatuhTempo = parseInt($('#jatuhTempo').val());
-        var newData = pelangganDB.push();
-        newData.set({nama, alamat, tanggalPasang, jatuhTempo, pembayaran:{}});
-        alert("Pelanggan berhasil disimpan!");
-        this.reset();
+    let total=0, lunas=0, pending=0, overdue=0;
+
+    for(let id in data){
+        const p = data[id];
+        total++;
+
+        // Default status
+        let status = "Belum";
+
+        // Jika pelanggan baru bulan ini, otomatis dianggap Lunas
+        const tanggalPasang = new Date(p.tanggalPasang);
+        if(tanggalPasang.getMonth() === today.getMonth() && tanggalPasang.getFullYear() === today.getFullYear()){
+            status = "Lunas";
+        } else if(p.pembayaran && p.pembayaran[bulanIni]==="Lunas"){
+            status = "Lunas";
+        }
+
+        // Hitung overdue/pending
+        const dueDate = new Date(today.getFullYear(), today.getMonth(), p.jatuhTempo);
+        if(status==="Belum"){
+            if(today > dueDate){
+                overdue++;
+            } else {
+                pending++;
+            }
+        } else {
+            lunas++;
+        }
+
+        // WA Link (pakai API biar lancar di semua device)
+        const pesan = `Halo ${p.nama}, Assalamualaikum bpk/ibu tagihan internet Anda sudah jatuh tempo. Kami hanya mengingatkan untuk melakukan pembayaran terimkasih :)`;
+        const waLink = `https://api.whatsapp.com/send?phone=${p.wa}&text=${encodeURIComponent(pesan)}`;
+
+        // Row Tabel
+        const tr = $('<tr>');
+        if(status==="Belum" && (dueDate - today)/(1000*60*60*24) <= 3 && (dueDate - today) >= 0) {
+            tr.addClass('near-due');
+        }
+
+        tr.append(`<td>${p.nama}</td>`);
+        tr.append(`<td>${p.alamat}</td>`);
+        tr.append(`<td>${p.tanggalPasang}</td>`);
+        tr.append(`<td>${p.jatuhTempo}</td>`);
+        tr.append(`<td>${p.wa}</td>`);
+        tr.append(`<td><span class="badge ${status==='Lunas'?'badge-lunas':'badge-belum'}">${status}</span></td>`);
+        tr.append(`<td><a href="${waLink}" target="_blank" class="btn btn-success btn-sm"><i class="fab fa-whatsapp"></i> Kirim WA</a></td>`);
+        tbody.append(tr);
+    }
+
+    if($.fn.DataTable.isDataTable('#tabelPelanggan')){
+        dataTable.clear().destroy();
+    }
+    dataTable = $('#tabelPelanggan').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['excel', 'pdf']
     });
 
-    function renderTable(data){
-        const tbody = $('#tabelPelanggan tbody');
-        tbody.empty();
-        const today = new Date();
-        const bulanIni = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0');
-
-        for(let id in data){
-            const p = data[id];
-            let status = "Belum";
-            if(p.pembayaran && p.pembayaran[bulanIni]==="Lunas") status="Lunas";
-
-            const tr = $('<tr>');
-            const dueDate = new Date(today.getFullYear(), today.getMonth(), p.jatuhTempo);
-            const diffDays = Math.floor((dueDate - today)/(1000*60*60*24));
-            if(status==="Belum" && diffDays<=3 && diffDays>=0) tr.addClass('near-due');
-
-            tr.append(`<td>${p.nama}</td>`);
-            tr.append(`<td>${p.alamat}</td>`);
-            tr.append(`<td>${p.tanggalPasang}</td>`);
-            tr.append(`<td>${p.jatuhTempo}</td>`);
-            tr.append(`<td><span class="badge ${status==='Lunas'?'badge-lunas':'badge-belum'}">${status}</span></td>`);
-            tbody.append(tr);
-        }
-
-        if($.fn.DataTable.isDataTable('#tabelPelanggan')){
-            dataTable.clear().destroy();
-        }
-        dataTable = $('#tabelPelanggan').DataTable();
-    }
+    // Update statistik
+    $('#totalCust').text(total);
+    $('#paidCust').text(lunas);
+    $('#pendingCust').text(pending);
+    $('#overdueCust').text(overdue);
+}
 
     pelangganDB.on('value', function(snapshot){
         const data = snapshot.val() || {};
