@@ -112,20 +112,30 @@
   const pemasukanDB = firebase.database().ref("pemasukan");
 
   // Submit Form
-  document.getElementById("formPemasukan").addEventListener("submit", function(e) {
-    e.preventDefault();
+document.getElementById("formPemasukan").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-    const namaTransaksi = document.getElementById("namaTransaksi").value;
-    const jumlah = document.getElementById("jumlah").value;
-    const tanggal = document.getElementById("tanggal").value;
-    const keterangan = document.getElementById("keterangan").value;
+  const namaTransaksi = document.getElementById("namaTransaksi").value;
+  const jumlah = document.getElementById("jumlah").value;
+  const tanggal = document.getElementById("tanggal").value;
+  const keterangan = document.getElementById("keterangan").value;
 
-    // Simpan ke Firebase
-   pemasukanDB.on("child_added", snapshot => {
+  // Simpan data ke Firebase
+  pemasukanDB.push({
+    nama: namaTransaksi,
+    jumlah: jumlah,
+    tanggal: tanggal,
+    keterangan: keterangan
+  });
+
+  // Reset form setelah simpan
+  document.getElementById("formPemasukan").reset();
+});
+
+// Listener untuk menampilkan data ke tabel
+pemasukanDB.on("child_added", snapshot => {
   let val = snapshot.val();
-  
-  // pastikan ambil angka murni
-  let jumlah = Number(val.jumlah || val.nominal || 0);
+  let jumlah = Number(val.jumlah || 0);
 
   let row = document.createElement("tr");
   row.innerHTML = `
@@ -135,8 +145,6 @@
     <td>${val.keterangan}</td>
   `;
   document.querySelector("#tabelPemasukan tbody").appendChild(row);
-});
-
 });
   // Export ke Excel
   function exportToExcel() {
